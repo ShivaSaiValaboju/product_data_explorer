@@ -7,11 +7,13 @@ export interface Book {
   imageUrl: string;
   productUrl: string;
   sourceId: string;
-  description?: string;
-  publisher?: string;
-  publicationDate?: Date;
-  isbn?: string;
+  description: string | null;
+  publisher: string | null;
+  publicationDate: Date | null;
+  isbn: string | null;
   categories: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Category {

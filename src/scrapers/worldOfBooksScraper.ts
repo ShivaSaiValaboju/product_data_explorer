@@ -1,4 +1,5 @@
-import { PlaywrightCrawler, Configuration } from 'crawlee';
+import { PlaywrightCrawler, PlaywrightCrawlerOptions } from 'crawlee';
+import { Page, Request } from 'playwright';
 import { Book, Category, Review } from '../models/types';
 import { Cache } from '../storage/cache';
 import { Database } from '../storage/database';
@@ -13,7 +14,7 @@ export class WorldOfBooksScraper {
     this.cache = new Cache();
     this.db = new Database();
 
-    const configuration: Configuration = {
+    const configuration: PlaywrightCrawlerOptions = {
       maxConcurrency: 2,
       requestHandler: this.router.bind(this),
     };
@@ -21,7 +22,7 @@ export class WorldOfBooksScraper {
     this.crawler = new PlaywrightCrawler(configuration);
   }
 
-  private async router({ page, request }) {
+  private async router({ page, request }: { page: Page; request: any }) {
     const url = request.url;
 
     // Check cache first

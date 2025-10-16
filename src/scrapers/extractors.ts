@@ -18,7 +18,12 @@ export async function extractBookDetails(page: Page): Promise<Book> {
       productUrl: window.location.href,
       sourceId: window.location.pathname.split('/').pop() || '',
       description,
-      categories: Array.from(document.querySelectorAll('.breadcrumb a')).map(a => a.textContent || '')
+      publisher: null,
+      publicationDate: null,
+      isbn: null,
+      categories: Array.from(document.querySelectorAll('.breadcrumb a')).map(a => a.textContent || ''),
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
   });
 }
