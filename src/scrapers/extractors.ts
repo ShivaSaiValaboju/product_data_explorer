@@ -1,7 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractBookData = extractBookData;
-function extractBookData(page) {
+import { Page } from 'playwright';
+
+export function extractBookData(page: Page) {
     // Placeholder for book data extraction logic
     return {
         title: 'Sample Book',

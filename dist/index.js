@@ -1,12 +1,11 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
+const crawlee_1 = require("crawlee");
+const worldOfBooksScraper_1 = require("./scrapers/worldOfBooksScraper");
 async function main() {
-    // Scraper removed due to build errors
-    console.log('No scrapers available');
+    const crawler = new crawlee_1.PlaywrightCrawler({
+        requestHandler: worldOfBooksScraper_1.router,
+    });
+    await crawler.run(['https://www.worldofbooks.com/en-gb']);
 }
-main();
+main().catch(console.error);
