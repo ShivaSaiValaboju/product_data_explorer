@@ -1,0 +1,23 @@
+{
+  "pages": {
+    "/page": [
+      "static/chunks/a4b69_next_dist_6013e261._.js",
+      "static/chunks/Desktop_product_data_explorer_src_app_favicon_ico_mjs_9bd18e35._.js",
+      "static/chunks/[root-of-the-server]__000f018e._.css",
+      "static/chunks/Desktop_product_data_explorer_ba70b1f8._.js",
+      "static/chunks/Desktop_product_data_explorer_src_app_layout_tsx_f42025d6._.js",
+      "static/chunks/a4b69_next_dist_client_components_builtin_global-error_1f210f6c.js",
+      "static/chunks/a4b69_next_dist_63a30fd6._.js",
+      "static/chunks/Desktop_product_data_explorer_src_app_page_tsx_1f210f6c._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_009beb7b._.js",
+      "static/chunks/a4b69_next_dist_compiled_react-dom_94d452e2._.js",
+      "static/chunks/a4b69_next_dist_compiled_next-devtools_index_d790c6b4.js",
+      "static/chunks/a4b69_next_dist_compiled_4e010859._.js",
+      "static/chunks/a4b69_next_dist_client_794f6ba2._.js",
+      "static/chunks/a4b69_next_dist_ec9a371e._.js",
+      "static/chunks/a4b69_@swc_helpers_cjs_4357739d._.js",
+      "static/chunks/Desktop_product_data_explorer_a0ff3932._.js",
+      "static/chunks/turbopack-Desktop_product_data_explorer_12ba1165._.js"
+    ]
+  }
+}

@@ -1,0 +1,134 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: wob_explorer_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+    
+    - name: Install Backend Dependencies
+      working-directory: backend
+      run: npm ci
+    
+    - name: Run Backend Linting
+      working-directory: backend
+      run: npm run lint
+    
+    - name: Run Backend Tests
+      working-directory: backend
+      run: npm run test
+      env:
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_USERNAME: postgres
+        DB_PASSWORD: postgres
+        DB_DATABASE: wob_explorer_test
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+        NODE_ENV: test
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install Frontend Dependencies
+      working-directory: frontend
+      run: npm ci
+    
+    - name: Run Frontend Linting
+      working-directory: frontend
+      run: npm run lint
+    
+    - name: Run Frontend Tests
+      working-directory: frontend
+      run: npm run test
+
+  build:
+    needs: [backend-tests, frontend-tests]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Build Backend
+      working-directory: backend
+      run: |
+        npm ci
+        npm run build
+    
+    - name: Build Frontend
+      working-directory: frontend
+      run: |
+        npm ci
+        npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    # Add deployment steps here based on your hosting provider
+    # Example for Railway:
+    # - name: Install Railway CLI
+    #   run: npm i -g @railway/cli
+    #
+    # - name: Deploy to Railway
+    #   run: railway up
+    #   env:
+    #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Book {
+  id              String   @id @default(uuid())
+  title           String
+  author          String
+  price           Float
+  imageUrl        String
+  productUrl      String
+  sourceId        String   @unique
+  description     String?
+  publisher       String?
+  publicationDate DateTime?
+  isbn            String?
+  categories      String[]
+  reviews         Review[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String
+  parentId String?
+  url      String
+  parent   Category? @relation("CategoryToCategory", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryToCategory")
+}
+
+model Review {
+  id      String   @id @default(uuid())
+  bookId  String
+  rating  Float
+  content String
+  author  String
+  date    DateTime
+  book    Book     @relation(fields: [bookId], references: [id])
+}
